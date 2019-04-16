@@ -2,23 +2,16 @@ package main
 
 import (
 	"./emul"
-	"fmt"
 	"sync"
 )
 
 func main() {
-	pf := emulator.CreateParcelFactory()
-	parcelCount := 6
-	p := emulator.DeclareParcelArray(parcelCount)
-	carrier := emulator.CreateCarrier()
-	var wg sync.WaitGroup
-	for i := 0; i < parcelCount; i++ {
-		p[i] = pf.GenParcel()
+	wg := new(sync.WaitGroup)
+	sorter := emulator.CreateSorter()
+	for i := 0; i < 6; i++ {
+		inp := emulator.CreateInput(i+1, sorter)
 		wg.Add(1)
-		carrier.Put(p[i], &wg)
-	}
-	for i := 0; i < parcelCount; i++ {
-		fmt.Println(p[i])
+		go inp.Put(20, wg)
 	}
 	wg.Wait()
 }
