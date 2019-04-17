@@ -21,7 +21,7 @@ func CreateCarrier() *carrier {
 	c := new(carrier)
 	c.rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
 	c.info = log.New(os.Stdout, "[INFO] ", log.Ldate|log.Ltime)
-	c.sender = CreateSender("localhost:4040")
+	c.sender = CreateSender("172.16.100.54:65000")
 	return c
 }
 
