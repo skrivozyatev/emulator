@@ -1,7 +1,7 @@
 package emulator
 
 import (
-	"log"
+	"../logger"
 	"net"
 )
 
@@ -14,7 +14,7 @@ func CreateSender(url string) *sender {
 	var err error
 	sender.conn, err = net.Dial("tcp", url)
 	if err != nil {
-		log.Fatalf("Error connecting %s: %s", url, err.Error())
+		logger.Fatalf("Error connecting %s: %s", url, err.Error())
 	}
 	return sender
 }
@@ -22,18 +22,18 @@ func CreateSender(url string) *sender {
 func (s *sender) Send(data []byte) {
 	n, err := s.conn.Write(stxEtxEncode(data))
 	if err != nil {
-		log.Printf("Error sending data %s", err.Error())
+		logger.Infof("Error sending data %s", err.Error())
 	} else {
-		log.Printf("[%s] %d bytes sent", data, n)
+		logger.Infof("[%s] %d bytes sent", data, n)
 	}
 }
 
 func (s *sender) SendString(message string) {
 	n, err := s.conn.Write(stxEtxEncode([]byte(message)))
 	if err != nil {
-		log.Printf("Error sending data %s", err.Error())
+		logger.Infof("Error sending data %s", err.Error())
 	} else {
-		log.Printf("[%s] %d bytes sent", message, n)
+		logger.Infof("[%s] %d bytes sent", message, n)
 	}
 }
 
